@@ -8,12 +8,15 @@ let package = Package(
     platforms: [
         .macOS(.v13)
     ],
+    dependencies: [
+        .package(url: "https://github.com/swhitty/SwiftDraw.git", from: "0.22.0")
+    ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .executableTarget(
             name: "KhimyaClipboard",
-            dependencies: [],
+            dependencies: ["SwiftDraw"],
             path: "Sources",
             swiftSettings: [
                 .unsafeFlags(["-parse-as-library"])

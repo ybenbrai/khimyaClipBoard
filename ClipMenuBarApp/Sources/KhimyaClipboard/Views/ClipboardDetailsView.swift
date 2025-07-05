@@ -1,6 +1,7 @@
 import SwiftUI
 import AppKit
 import WebKit
+import SwiftDraw
 
 struct ClipboardDetailsView: View {
     let item: ClipboardItem
@@ -41,7 +42,18 @@ struct ClipboardDetailsView: View {
     private func filePreview(url: URL) -> some View {
         let ext = url.pathExtension.lowercased()
         if ext == "svg" {
-            return AnyView(SVGView(url: url).frame(maxHeight: 150))
+            return AnyView(
+                SVGView(url: url)
+                    .frame(maxHeight: 150)
+                    .background(Color.clear)
+            )
+        } else if ["png", "jpg", "jpeg", "gif", "bmp", "tiff", "heic", "webp"].contains(ext), let nsImage = NSImage(contentsOf: url) {
+            return AnyView(
+                Image(nsImage: nsImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .cornerRadius(6)
+            )
         } else if item.content.isDirectory {
             return AnyView(
                 Label(url.lastPathComponent, systemImage: "folder")
@@ -106,11 +118,16 @@ struct ClipboardDetailsView: View {
 
 struct SVGView: NSViewRepresentable {
     let url: URL
-    func makeNSView(context: Context) -> WKWebView {
-        let webView = WKWebView()
-        webView.loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
-        webView.setValue(false, forKey: "drawsBackground")
-        return webView
+    func makeNSView(context: Context) -> NSView {
+        guard let svg = SVG(fileURL: url) else {
+            return NSView()
+        }
+        let svgView = SwiftDraw.SVGView(svg: svg)
+        let hostingView = NSHostingView(rootView: svgView)
+        hostingView.frame = CGRect(origin: .zero, size: svg.size)
+        hostingView.wantsLayer = true
+        hostingView.layer?.backgroundColor = CGColor.clear
+        return hostingView
     }
-    func updateNSView(_ nsView: WKWebView, context: Context) {}
+    func updateNSView(_ nsView: NSView, context: Context) {}
 }

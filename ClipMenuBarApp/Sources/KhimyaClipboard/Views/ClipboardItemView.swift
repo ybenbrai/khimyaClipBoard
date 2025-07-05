@@ -71,7 +71,7 @@ struct ClipboardItemView: View {
         case .image:
             Image(systemName: "photo")
                 .foregroundColor(.green)
-        case .file(let url):
+        case .file:
             if item.content.isDirectory {
                 Image(systemName: "folder")
                     .foregroundColor(.yellow)
