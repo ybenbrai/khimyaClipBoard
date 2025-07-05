@@ -6,6 +6,20 @@ A beautiful and efficient clipboard manager for macOS built with SwiftUI.
 ![Swift](https://img.shields.io/badge/Swift-6.1-orange.svg)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 
+## 🚀 Quick Start
+
+### Download & Install
+
+1. **Download**: Get the latest release from [GitHub Releases](https://github.com/ybenbrai/khimyaClipBoard/releases)
+2. **Extract**: Unzip the `KhimyaClipboard.zip` file
+3. **Run**: Double-click `KhimyaClipboard` to start the app
+4. **Use**: The app appears in your menu bar - click the clipboard icon to open
+
+### System Requirements
+
+- macOS 13.0 or later
+- No additional installation required
+
 ## ✨ Features
 
 - **📋 Clipboard History**: Keep track of your last clipboard items
@@ -17,36 +31,7 @@ A beautiful and efficient clipboard manager for macOS built with SwiftUI.
 - **🔍 Smart Deduplication**: Avoid duplicate entries
 - **💾 Persistent Storage**: Your clipboard history stays safe
 
-## 🚀 Installation
-
-### Prerequisites
-
-- macOS 13.0 or later
-- Xcode 15.0 or later (for development)
-
-### Build from Source
-
-1. Clone the repository:
-
-```bash
-git clone https://github.com/ybenbrai/khimyaClipBoard.git
-cd khimyaClipBoard
-```
-
-2. Build the project:
-
-```bash
-cd ClipMenuBarApp
-swift build
-```
-
-3. Run the application:
-
-```bash
-swift run
-```
-
-## 🎯 Usage
+## 🎯 How to Use
 
 1. **Launch**: The app runs in the menu bar with a clipboard icon
 2. **Access**: Click the menu bar icon to open the clipboard history
@@ -56,52 +41,15 @@ swift run
 6. **About**: Click the info button to learn more about the app
 7. **Quit**: Use the power button to exit the application
 
-## 🛠️ Development
+## 🔒 Security Note
 
-### Project Structure
+macOS may show a security warning the first time you run the app. This is normal for apps not from the App Store.
 
-```
-ClipMenuBarApp/
-├── Sources/
-│   └── KhimyaClipboard/
-│       ├── Controllers/
-│       │   ├── MenuBarController.swift
-│       │   └── ClipboardPanelWindow.swift
-│       ├── Models/
-│       │   ├── ClipboardManager.swift
-│       │   └── ClipboardItem.swift
-│       ├── Views/
-│       │   ├── ClipboardHistoryView.swift
-│       │   ├── ClipboardDetailsView.swift
-│       │   ├── ClipboardItemView.swift
-│       │   ├── AboutModal.swift
-│       │   └── ConfirmClearModal.swift
-│       └── Utils/
-│           └── Constants.swift
-├── Package.swift
-└── README.md
-```
+**To allow the app:**
 
-### Key Components
-
-- **ClipboardManager**: Handles clipboard monitoring and item management
-- **MenuBarController**: Manages the menu bar integration and window
-- **ClipboardHistoryView**: Main UI with split view (list + details)
-- **ClipboardDetailsView**: Shows item preview and metadata
-- **SVGView**: Custom WebKit wrapper for SVG rendering
-
-### Building
-
-```bash
-# Build for development
-swift build
-
-# Build for release
-swift build -c release
-
-# Run tests (if any)
-swift test
-```
+1. Go to System Preferences → Security & Privacy
+2. Click "Open Anyway" next to KhimyaClipboard
+3. The app will now run normally
 
 ## 🎨 UI/UX Features
 
@@ -111,21 +59,24 @@ swift test
 - **Smooth Animations**: Polished user experience
 - **Accessibility**: Built with accessibility in mind
 
-## 🔧 Technical Details
+## 🆘 Need Help?
 
-- **Language**: Swift 6.1
-- **Framework**: SwiftUI + AppKit
-- **Architecture**: MVVM with ObservableObject
-- **Dependencies**: None (pure Swift)
-- **Platform**: macOS 13.0+
+- Right-click the menu bar icon for options
+- Check the About section in the app
+- Visit: https://github.com/ybenbrai/khimyaClipBoard
+- Open an issue on GitHub for bugs or feature requests
 
-## 🤝 Contributing
+## 🔧 For Developers
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+If you want to build from source or contribute:
+
+```bash
+git clone https://github.com/ybenbrai/khimyaClipBoard.git
+cd khimyaClipBoard/ClipMenuBarApp
+swift build -c release
+```
+
+See [ClipMenuBarApp/README.md](ClipMenuBarApp/README.md) for detailed developer documentation.
 
 ## 📝 License
 
@@ -140,8 +91,7 @@ Developed with ❤️ for the macOS community.
 ## 🙏 Acknowledgments
 
 - Apple for SwiftUI and AppKit
-- The macOS development community
-- All contributors and users
+- SwiftDraw for native SVG rendering
 
 ---
 
