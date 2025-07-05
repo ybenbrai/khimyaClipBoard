@@ -3,26 +3,36 @@
 ## 🚀 Quick Installation
 
 ### Step 1: Download
-- Download `KhimyaClipboard.zip` from the releases
+
+- Download `KhimyaClipboard-App.zip` from the releases
 - Extract the zip file to your Desktop or Downloads folder
 
-### Step 2: Run
-- Double-click the `KhimyaClipboard` file
+### Step 2: Install
+
+- Drag `KhimyaClipboard.app` to your Applications folder
+- Or double-click to run directly from the extracted location
+
+### Step 3: Run
+
+- Open the app from Applications folder
+- Or double-click the app file
 - The app will start and appear in your menu bar
 
-### Step 3: Use
+### Step 4: Use
+
 - Click the clipboard icon in your menu bar to open the app
 - Start copying items - they'll appear in your clipboard history!
 
-## 🔒 Security Note
-macOS may show a security warning the first time you run the app. This is normal for apps not from the App Store.
+## 🔒 Security & Trust
 
-**To allow the app:**
-1. Go to System Preferences → Security & Privacy
-2. Click "Open Anyway" next to KhimyaClipboard
-3. The app will now run normally
+✅ **Code Signed**: The app is properly signed and trusted by macOS  
+✅ **No Security Warnings**: Runs without "unidentified developer" alerts  
+✅ **Proper Permissions**: Has necessary entitlements for clipboard access
+
+**No additional security steps required!** The app is trusted by macOS and will run immediately.
 
 ## 🎯 Features
+
 - 📋 Clipboard history with real-time monitoring
 - 🖼️ Image and SVG preview support
 - 📁 File and folder support
@@ -30,12 +40,14 @@ macOS may show a security warning the first time you run the app. This is normal
 - 🎨 Beautiful, modern interface
 
 ## 🆘 Need Help?
+
 - Right-click the menu bar icon for options
 - Check the About section in the app
 - Visit: https://github.com/ybenbrai/khimyaClipBoard
 
 ## 📝 System Requirements
+
 - macOS 13.0 or later
 - No additional software required
 
-Enjoy your new clipboard manager! 🎉 
+Enjoy your new clipboard manager! 🎉

@@ -11,9 +11,10 @@ A beautiful and efficient clipboard manager for macOS built with SwiftUI.
 ### Download & Install
 
 1. **Download**: Get the latest release from [GitHub Releases](https://github.com/ybenbrai/khimyaClipBoard/releases)
-2. **Extract**: Unzip the `KhimyaClipboard.zip` file
-3. **Run**: Double-click `KhimyaClipboard` to start the app
-4. **Use**: The app appears in your menu bar - click the clipboard icon to open
+2. **Extract**: Unzip the `KhimyaClipboard-App.zip` file
+3. **Install**: Drag `KhimyaClipboard.app` to your Applications folder
+4. **Run**: Double-click the app or launch from Applications
+5. **Use**: The app appears in your menu bar - click the clipboard icon to open
 
 ### System Requirements
 
@@ -41,15 +42,12 @@ A beautiful and efficient clipboard manager for macOS built with SwiftUI.
 6. **About**: Click the info button to learn more about the app
 7. **Quit**: Use the power button to exit the application
 
-## 🔒 Security Note
+## 🔒 Security & Trust
 
-macOS may show a security warning the first time you run the app. This is normal for apps not from the App Store.
-
-**To allow the app:**
-
-1. Go to System Preferences → Security & Privacy
-2. Click "Open Anyway" next to KhimyaClipboard
-3. The app will now run normally
+✅ **Code Signed**: The app is properly signed and trusted by macOS  
+✅ **No Security Warnings**: Runs without "unidentified developer" alerts  
+✅ **Proper Permissions**: Has necessary entitlements for clipboard access  
+✅ **Native macOS App**: Looks and behaves like any other macOS application
 
 ## 🎨 UI/UX Features
 
