@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct ConfirmClearModal: View {
+    var message: String = "Are you sure you want to delete this item? This cannot be undone."
+    var confirmLabel: String = "Delete"
     let onConfirm: () -> Void
     let onCancel: () -> Void
     @State private var hoveringCancel = false
@@ -8,10 +10,10 @@ struct ConfirmClearModal: View {
     
     var body: some View {
         VStack(spacing: 24) {
-            Text("Clear Clipboard History")
+            Text(confirmLabel == "Delete" ? "Delete Clipboard Item" : "Clear Clipboard History")
                 .font(.system(size: 18, weight: .bold))
                 .padding(.top, 12)
-            Text("Are you sure you want to delete all clipboard items? This cannot be undone.")
+            Text(message)
                 .font(.system(size: 14))
                 .multilineTextAlignment(.center)
                 .foregroundColor(.secondary)
@@ -35,7 +37,7 @@ struct ConfirmClearModal: View {
                 }
                 .buttonStyle(PlainButtonStyle())
                 Button(action: onConfirm) {
-                    Text("Delete")
+                    Text(confirmLabel)
                         .foregroundColor(.white)
                         .frame(minWidth: 80)
                         .padding(.vertical, 6)
@@ -54,4 +56,4 @@ struct ConfirmClearModal: View {
         .frame(width: 408)
         .padding()
     }
-} 
+}

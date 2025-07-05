@@ -5,160 +5,89 @@ import WebKit
 struct ClipboardDetailsView: View {
     let item: ClipboardItem
     let currentTime: Date
-    
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            // Preview
-            Group {
-                if case .image(let image) = item.content {
-                    Image(nsImage: image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxHeight: 120)
-                        .cornerRadius(8)
-                        .padding(.top, 16)
-                        .padding(.horizontal, 16)
-                } else if case .file(let url) = item.content {
-                    let ext = url.pathExtension.lowercased()
-                    if ext == "svg" {
-                        SVGView(url: url)
-                            .frame(maxHeight: 120)
-                            .padding(.top, 16)
-                            .padding(.horizontal, 16)
-                    } else if item.content.isDirectory {
-                        HStack(spacing: 8) {
-                            Image(systemName: "folder")
-                                .font(.system(size: 32))
-                                .foregroundColor(.yellow)
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(url.lastPathComponent.trimmingCharacters(in: .whitespacesAndNewlines))
-                                    .font(.system(size: 15, weight: .medium))
-                                    .lineLimit(1)
-                                Text(url.path.trimmingCharacters(in: .whitespacesAndNewlines))
-                                    .font(.system(size: 11))
-                                    .foregroundColor(.secondary)
-                                    .lineLimit(2)
-                            }
-                        }
-                        .padding(.top, 16)
-                        .padding(.horizontal, 16)
-                    } else if let nsImage = NSImage(contentsOf: url) {
-                        Image(nsImage: nsImage)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(maxHeight: 120)
-                            .cornerRadius(8)
-                            .padding(.top, 16)
-                            .padding(.horizontal, 16)
-                    } else {
-                        HStack(spacing: 8) {
-                            Image(systemName: "doc")
-                                .font(.system(size: 32))
-                                .foregroundColor(.orange)
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(url.lastPathComponent.trimmingCharacters(in: .whitespacesAndNewlines))
-                                    .font(.system(size: 15, weight: .medium))
-                                    .lineLimit(1)
-                                Text(url.path.trimmingCharacters(in: .whitespacesAndNewlines))
-                                    .font(.system(size: 11))
-                                    .foregroundColor(.secondary)
-                                    .lineLimit(2)
-                            }
-                        }
-                        .padding(.top, 16)
-                        .padding(.horizontal, 16)
-                    }
-                } else if case .text(let text) = item.content {
-                    ScrollView {
-                        Text(text.trimmingCharacters(in: .whitespacesAndNewlines))
-                            .font(.system(size: 15, weight: .regular, design: .monospaced))
-                            .padding(.top, 16)
-                            .padding(.horizontal, 16)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                    }
-                    .frame(maxHeight: 120)
-                }
+        ScrollView {
+            VStack(alignment: .leading, spacing: 12) {
+                previewSection
+                Divider()
+                infoSection
+                Divider()
+                actionSection
             }
-            Divider().padding(.vertical, 12)
-            // Details
-            VStack(alignment: .leading, spacing: 10) {
-                HStack {
-                    Text("Application")
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundColor(.secondary)
-                    Spacer()
-                    Text("Cursor")
-                        .font(.system(size: 12, weight: .regular))
-                        .foregroundColor(.primary)
-                }
-                HStack {
-                    Text("Types")
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundColor(.secondary)
-                    Spacer()
-                    Text(item.content.type)
-                        .font(.system(size: 12, weight: .regular))
-                        .foregroundColor(.primary)
-                }
-                HStack {
-                    Text("Number of copies")
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundColor(.secondary)
-                    Spacer()
-                    Text("\(item.copyCount)")
-                        .font(.system(size: 12, weight: .regular))
-                        .foregroundColor(.primary)
-                }
-                HStack {
-                    Text("First copy time")
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundColor(.secondary)
-                    Spacer()
-                    Text(dateString(item.firstCopied))
-                        .font(.system(size: 12, weight: .regular))
-                        .foregroundColor(.primary)
-                }
-                HStack {
-                    Text("Last copy time")
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundColor(.secondary)
-                    Spacer()
-                    Text(dateString(item.lastCopied))
-                        .font(.system(size: 12, weight: .regular))
-                        .foregroundColor(.primary)
-                }
-            }
-            .padding(.horizontal, 16)
-            .padding(.bottom, 16)
-            Spacer()
-            // Actions
-            HStack {
-                Button(action: { copyToClipboard(item) }) {
-                    Text("Copy")
-                        .font(.system(size: 13, weight: .medium))
-                        .padding(.vertical, 6)
-                        .padding(.horizontal, 16)
-                        .background(Color.accentColor.opacity(0.15))
-                        .cornerRadius(6)
-                }
-                .onHover { hovering in
-                    if hovering { NSCursor.pointingHand.push() } else { NSCursor.pop() }
-                }
-                .buttonStyle(PlainButtonStyle())
-                Spacer()
-            }
-            .padding(.horizontal, 16)
-            .padding(.bottom, 16)
+            .padding(16)
         }
     }
-    
+
+    private var previewSection: some View {
+        Group {
+            if case .image(let image) = item.content {
+                Image(nsImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .cornerRadius(6)
+            } else if case .file(let url) = item.content {
+                filePreview(url: url)
+            } else if case .text(let text) = item.content {
+                ScrollView(.vertical) {
+                    Text(text)
+                        .font(.system(size: 13, weight: .regular, design: .monospaced))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+            }
+        }
+    }
+
+    private func filePreview(url: URL) -> some View {
+        let ext = url.pathExtension.lowercased()
+        if ext == "svg" {
+            return AnyView(SVGView(url: url).frame(maxHeight: 150))
+        } else if item.content.isDirectory {
+            return AnyView(
+                Label(url.lastPathComponent, systemImage: "folder")
+                    .font(.system(size: 14))
+            )
+        } else {
+            return AnyView(
+                Label(url.lastPathComponent, systemImage: "doc")
+                    .font(.system(size: 14))
+            )
+        }
+    }
+
+    private var infoSection: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            infoRow("Type", item.content.type)
+            infoRow("Copies", "\(item.copyCount)")
+            infoRow("First Copied", dateString(item.firstCopied))
+            infoRow("Last Copied", dateString(item.lastCopied))
+        }
+    }
+
+    private func infoRow(_ title: String, _ value: String) -> some View {
+        HStack {
+            Text(title).font(.system(size: 11)).foregroundColor(.secondary)
+            Spacer()
+            Text(value).font(.system(size: 11))
+        }
+    }
+
+    private var actionSection: some View {
+        Button(action: {
+            copyToClipboard(item)
+        }) {
+            Label("Copy to Clipboard", systemImage: "doc.on.doc")
+        }
+        .buttonStyle(LinkButtonStyle())
+    }
+
     private func dateString(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
-        formatter.timeStyle = .medium
+        formatter.timeStyle = .short
         return formatter.string(from: date)
     }
-    
+
     private func copyToClipboard(_ item: ClipboardItem) {
         let pasteboard = NSPasteboard.general
         pasteboard.clearContents()
@@ -184,4 +113,4 @@ struct SVGView: NSViewRepresentable {
         return webView
     }
     func updateNSView(_ nsView: WKWebView, context: Context) {}
-} 
+}

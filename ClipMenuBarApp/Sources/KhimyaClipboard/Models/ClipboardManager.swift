@@ -9,7 +9,7 @@ class ClipboardManager: ObservableObject {
 
     private var lastText: String = ""
     private var timer: Timer?
-    private let maxItems = 10
+    private let maxItems = 50
 
     private var lastCopiedText: String? = nil
     private var lastCopiedFile: String? = nil
@@ -81,6 +81,15 @@ class ClipboardManager: ObservableObject {
         }
     }
 
+    func sortItems() {
+        items = items.sorted { (a, b) in
+            if a.pinned != b.pinned {
+                return a.pinned && !b.pinned
+            }
+            return a.lastCopied > b.lastCopied
+        }
+    }
+
     private func addItem(content: ClipboardContent) {
         let now = Date()
         if let existingIndex = items.firstIndex(where: { $0.content.preview == content.preview }) {
@@ -95,6 +104,7 @@ class ClipboardManager: ObservableObject {
                 items = Array(items.prefix(maxItems))
             }
         }
+        sortItems()
 
         switch content {
         case .text(let text):
@@ -140,6 +150,7 @@ class ClipboardManager: ObservableObject {
 
     func removeItem(_ item: ClipboardItem) {
         items.removeAll { $0.id == item.id }
+        sortItems()
         if items.isEmpty {
             lastCopiedText = nil
             lastCopiedFile = nil

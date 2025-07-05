@@ -8,6 +8,7 @@ struct ClipboardItem: Identifiable, Hashable {
     var lastCopied: Date
     var copyCount: Int
     let preview: String
+    var pinned: Bool = false
     
     init(content: ClipboardContent, date: Date = Date()) {
         self.id = UUID()

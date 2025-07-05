@@ -6,78 +6,62 @@ struct ClipboardItemView: View {
     let currentTime: Date
     let isSelected: Bool
     let onSelect: () -> Void
-    let onCopy: () -> Void
+    let onPin: () -> Void
     let onDelete: () -> Void
-    
+
     @State private var isHovered = false
-    @State private var hoveringCopy = false
-    @State private var hoveringDelete = false
-    
+
     var body: some View {
         HStack(spacing: 10) {
+            Button(action: onPin) {
+                Image(systemName: item.pinned ? "star.fill" : "star")
+                    .foregroundColor(item.pinned ? .yellow : .gray)
+            }
+            .buttonStyle(PlainButtonStyle())
+            .frame(width: 20, height: 20)
+
             contentIcon
-                .frame(width: 22, height: 22)
-            VStack(alignment: .leading, spacing: 2) {
-                Text(item.preview)
-                    .font(.system(size: 13, weight: .medium))
-                    .foregroundColor(.primary)
+                .frame(width: 20, height: 20)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(item.preview.trimmingCharacters(in: .whitespacesAndNewlines))
+                    .font(.system(size: 12, weight: .regular))
                     .lineLimit(1)
-                    .multilineTextAlignment(.leading)
+                Spacer(minLength: 2)
                 Text(timeAgoString(from: item.lastCopied))
-                    .font(.system(size: 11, weight: .regular))
+                    .font(.system(size: 10))
                     .foregroundColor(.secondary)
             }
-            Spacer()
-            if isHovered || isSelected {
-                Button(action: onCopy) {
-                    Image(systemName: "doc.on.doc")
-                        .font(.system(size: 12, weight: .medium))
-                        .foregroundColor(.blue)
-                }
-                .buttonStyle(PlainButtonStyle())
-                .onHover { hovering in
-                    hoveringCopy = hovering
-                    if hovering { NSCursor.pointingHand.push() } else { NSCursor.pop() }
-                }
-                Button(action: onDelete) {
-                    Image(systemName: "trash")
-                        .font(.system(size: 12, weight: .medium))
-                        .foregroundColor(.red)
-                }
-                .buttonStyle(PlainButtonStyle())
-                .onHover { hovering in
-                    hoveringDelete = hovering
-                    if hovering { NSCursor.pointingHand.push() } else { NSCursor.pop() }
-                }
+            .padding(.vertical, 2)
+
+            Spacer(minLength: 8)
+
+            Button(action: onDelete) {
+                Image(systemName: "trash")
+                    .foregroundColor(.red)
             }
+            .buttonStyle(PlainButtonStyle())
+            .help("Delete")
         }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 6)
+        .padding(.horizontal, 4)
+        .padding(.vertical, 2)
         .background(
-            ZStack {
-                if isSelected {
-                    RoundedRectangle(cornerRadius: 6)
-                        .fill(Color.accentColor.opacity(0.15))
-                } else if isHovered {
-                    RoundedRectangle(cornerRadius: 6)
-                        .fill(Color(NSColor.controlAccentColor).opacity(0.07))
-                }
-            }
+            RoundedRectangle(cornerRadius: 4)
+                .fill(isSelected ? Color.accentColor.opacity(0.15) : isHovered ? Color(NSColor.controlAccentColor).opacity(0.06) : Color.clear)
         )
         .overlay(
-            RoundedRectangle(cornerRadius: 6)
-                .stroke(isSelected ? Color.accentColor : Color.clear, lineWidth: 1.5)
+            RoundedRectangle(cornerRadius: 4)
+                .stroke(isSelected ? Color.accentColor : Color.clear, lineWidth: 1)
         )
         .onHover { hovering in
             isHovered = hovering
-            if hovering { NSCursor.pointingHand.push() } else { NSCursor.pop() }
         }
         .contentShape(Rectangle())
         .onTapGesture {
             onSelect()
         }
     }
-    
+
     @ViewBuilder
     private var contentIcon: some View {
         switch item.content {
@@ -91,16 +75,13 @@ struct ClipboardItemView: View {
             if item.content.isDirectory {
                 Image(systemName: "folder")
                     .foregroundColor(.yellow)
-            } else if url.pathExtension.lowercased() == "png" || url.pathExtension.lowercased() == "jpg" || url.pathExtension.lowercased() == "jpeg" || url.pathExtension.lowercased() == "gif" {
-                Image(systemName: "photo")
-                    .foregroundColor(.green)
             } else {
                 Image(systemName: "doc")
                     .foregroundColor(.orange)
             }
         }
     }
-    
+
     private func timeAgoString(from date: Date) -> String {
         let interval = currentTime.timeIntervalSince(date)
         if interval < 60 { return "Just now" }
@@ -114,4 +95,4 @@ struct ClipboardItemView: View {
             return formatter.string(from: date)
         }
     }
-} 
+}
