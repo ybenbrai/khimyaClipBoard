@@ -8,6 +8,12 @@ let package = Package(
     platforms: [
         .macOS(.v13)
     ],
+    products: [
+        .executable(
+            name: "KhimyaClipboard",
+            targets: ["KhimyaClipboard"]
+        )
+    ],
     dependencies: [
         .package(url: "https://github.com/swhitty/SwiftDraw.git", from: "0.22.0")
     ],
