@@ -7,7 +7,6 @@ struct ClipboardHistoryView: View {
     @State private var showClearConfirmation = false
     @State private var showAboutModal = false
     @State private var hoveringTrash = false
-    @State private var hoveringAbout = false
     var isModalPresented: Binding<Bool>?
     
     var body: some View {
@@ -92,32 +91,6 @@ struct ClipboardHistoryView: View {
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundColor(.primary)
             Spacer()
-            Button(action: {
-                NSApplication.shared.terminate(nil)
-            }) {
-                Image(systemName: "power")
-                    .font(.system(size: 16, weight: .medium))
-                    .foregroundColor(.red)
-            }
-            .buttonStyle(PlainButtonStyle())
-            .help("Quit Khimya Clipboard")
-            .onHover { hovering in
-                if hovering { NSCursor.pointingHand.push() } else { NSCursor.pop() }
-            }
-            Button(action: {
-                showAboutModal = true
-                isModalPresented?.wrappedValue = true
-            }) {
-                Image(systemName: "info.circle")
-                    .font(.system(size: 16, weight: .medium))
-                    .foregroundColor(.blue)
-            }
-            .buttonStyle(PlainButtonStyle())
-            .help("About Khimya Clipboard")
-            .onHover { hovering in
-                hoveringAbout = hovering
-                if hovering { NSCursor.pointingHand.push() } else { NSCursor.pop() }
-            }
             Button(action: {
                 showClearConfirmation = true
                 isModalPresented?.wrappedValue = true
