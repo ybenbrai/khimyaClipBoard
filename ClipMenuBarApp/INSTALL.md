@@ -41,6 +41,7 @@
 - 🎯 Smart pinning for important items
 - 🎨 Beautiful, modern interface
 - 📊 Support for PDF, Office docs, code files, media, archives, and executables
+- ℹ️ Modern About page with borderless design
 
 ## 🆘 Need Help?
 

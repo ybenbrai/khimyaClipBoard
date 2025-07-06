@@ -34,6 +34,7 @@ A beautiful and efficient clipboard manager for macOS built with SwiftUI.
 - **🔍 Smart Deduplication**: Avoid duplicate entries
 - **💾 Persistent Storage**: Your clipboard history stays safe
 - **📊 Comprehensive File Support**: PDF, Office docs, code files, media, archives, executables, and more
+- **ℹ️ Modern About Page**: Beautiful borderless About panel with seamless navigation
 
 ## 🎯 How to Use
 

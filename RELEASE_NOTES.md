@@ -1,5 +1,40 @@
 # Release Notes
 
+## Version 2.1.1 - Modern About Page & UI Enhancements
+
+### 🎨 **About Page Redesign**
+
+#### ✨ **New About Experience**
+
+- **Modern SwiftUI Interface**: Replaced old NSAlert with beautiful SwiftUI AboutView
+- **Borderless Design**: Clean, floating panel with no window chrome
+- **Floating Panel**: Movable About window that doesn't interfere with main app
+- **Better Navigation**: Proper "Back to App" and "Close" buttons
+- **Enhanced UX**: Professional, modern look that matches the app's design
+
+#### 🔧 **Technical Improvements**
+
+- **Architecture Update**: Moved from NSAlert to SwiftUI sheet system
+- **Code Cleanup**: Removed old AboutModal.swift in favor of new AboutView.swift
+- **Better Integration**: About panel properly integrated with main app window
+- **Memory Management**: Improved panel lifecycle management
+
+### 🎯 **User Experience**
+
+- **Access**: Right-click menu bar icon → "About Khimya Clipboard"
+- **Navigation**: Seamless back-and-forth between About and main app
+- **Visual Design**: Consistent with modern macOS design patterns
+- **Performance**: Faster loading and smoother transitions
+
+### 📱 **Design Features**
+
+- **Borderless Window**: No title bar, close button, or window decorations
+- **Movable**: Users can drag the About panel anywhere on screen
+- **Floating**: Stays on top without blocking main app functionality
+- **Responsive**: Adapts to different screen sizes and resolutions
+
+---
+
 ## Version 2.1.0 - Enhanced Type Icons & UI Improvements
 
 ### 🎨 **Major UI Enhancements**
