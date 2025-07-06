@@ -2,57 +2,133 @@
 
 ## 🚀 Quick Installation
 
-### Step 1: Download
+### For End Users
 
-- Download `KhimyaClipboard-App.zip` from the releases
-- Extract the zip file to your Desktop or Downloads folder
+1. **Download the App**
 
-### Step 2: Install
+   - Go to [GitHub Releases](https://github.com/ybenbrai/khimyaClipBoard/releases)
+   - Download the latest `KhimyaClipboard-App.zip`
 
-- Drag `KhimyaClipboard.app` to your Applications folder
-- Or double-click to run directly from the extracted location
+2. **Install**
 
-### Step 3: Run
+   - Extract the ZIP file
+   - Drag `KhimyaClipboard.app` to your Applications folder
+   - Launch from Applications
 
-- Open the app from Applications folder
-- Or double-click the app file
-- The app will start and appear in your menu bar
+3. **First Launch**
+   - The app will appear in your menu bar
+   - Click the clipboard icon to open
+   - Grant clipboard access if prompted
 
-### Step 4: Use
+### For Developers
 
-- Click the clipboard icon in your menu bar to open the app
-- Start copying items - they'll appear in your clipboard history!
+1. **Clone the Repository**
 
-## 🔒 Security & Trust
+   ```bash
+   git clone https://github.com/ybenbrai/khimyaClipBoard.git
+   cd khimyaClipBoard/ClipMenuBarApp
+   ```
 
-✅ **Code Signed**: The app is properly signed and trusted by macOS  
-✅ **No Security Warnings**: Runs without "unidentified developer" alerts  
-✅ **Proper Permissions**: Has necessary entitlements for clipboard access
+2. **Build and Run**
+   ```bash
+   swift build
+   swift run
+   ```
 
-**No additional security steps required!** The app is trusted by macOS and will run immediately.
+## 🔧 System Requirements
+
+- **macOS**: 13.0 or later
+- **Architecture**: Apple Silicon (M1/M2) or Intel
+- **Memory**: 50MB RAM
+- **Storage**: 10MB disk space
 
 ## 🎯 Features
 
-- 📋 Clipboard history with real-time monitoring
-- 🎨 Colored type icons for 150+ file types
-- 🖼️ Image and SVG preview support
-- 📁 File and folder support with smart detection
-- ⚡ One-click copy from history
-- 🎯 Smart pinning for important items
-- 🎨 Beautiful, modern interface
-- 📊 Support for PDF, Office docs, code files, media, archives, and executables
-- ℹ️ Modern About page with borderless design
-- 🚀 Auto-start at system startup
+### Core Functionality
 
-## 🆘 Need Help?
+- **Clipboard History**: Automatic tracking of copied content
+- **Multi-format Support**: Text, images, files, and URLs
+- **Smart Deduplication**: Prevents duplicate entries
+- **Visual Type Icons**: 150+ file extensions with semantic colors
 
-- Right-click the menu bar icon for options
-- Check the About section in the app
-- Visit: https://github.com/ybenbrai/khimyaClipBoard
+### User Interface
 
-## 📝 System Requirements
+- **Modern SwiftUI**: Clean, responsive design
+- **Menu Bar Integration**: Easy access from anywhere
+- **Sticky Copy Button**: Always-accessible copy functionality
+- **Hover Effects**: Interactive elements with visual feedback
 
-- macOS 13.0 or later
-- No additional software required
+### Advanced Features
 
-Enjoy your new clipboard manager! 🎉
+- **Pin Items**: Star important clipboard entries
+- **Auto-Start**: Launch automatically on system startup
+- **Search & Filter**: Find items quickly
+- **Clear History**: Easy cleanup options
+
+## 🔒 Security & Permissions
+
+The app requires the following permissions:
+
+- **Clipboard Access**: To monitor and copy content
+- **Auto-Start**: To launch at system startup (optional)
+
+All permissions are handled through standard macOS security dialogs.
+
+## 🐛 Troubleshooting
+
+### App Won't Launch
+
+1. Check macOS version (requires 13.0+)
+2. Verify the app is in Applications folder
+3. Check Gatekeeper settings in System Preferences
+
+### Clipboard Not Working
+
+1. Grant clipboard access when prompted
+2. Check System Preferences > Security & Privacy > Privacy > Accessibility
+3. Restart the app if needed
+
+### Auto-Start Issues
+
+1. Enable auto-start in the app's About panel
+2. Check System Preferences > Users & Groups > Login Items
+3. Restart your Mac to test
+
+## 📝 Development Notes
+
+### Project Structure
+
+```
+ClipMenuBarApp/
+├── Sources/KhimyaClipboard/
+│   ├── Controllers/     # App lifecycle and window management
+│   ├── Models/          # Data models and clipboard management
+│   ├── Views/           # SwiftUI user interface components
+│   └── Utils/           # Constants and utilities
+├── Package.swift        # Swift Package Manager configuration
+└── Info.plist          # App metadata and permissions
+```
+
+### Key Technologies
+
+- **SwiftUI**: Modern declarative UI framework
+- **AppKit**: Native macOS integration
+- **Combine**: Reactive programming for data flow
+- **SwiftDraw**: SVG rendering support
+
+### Building for Distribution
+
+```bash
+swift build -c release
+# The built app will be in .build/release/
+```
+
+## 🤝 Support
+
+- **GitHub Issues**: Report bugs or request features
+- **Documentation**: Check the main README.md
+- **Developer**: [Khimya](https://imedia24.de)
+
+---
+
+**Khimya Clipboard** - A modern clipboard manager for macOS

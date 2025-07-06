@@ -1,0 +1,4 @@
+.target(
+    name: "KhimyaClipboard",
+    dependencies: []
+), 

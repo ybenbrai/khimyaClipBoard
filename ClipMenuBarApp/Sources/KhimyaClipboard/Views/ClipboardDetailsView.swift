@@ -8,15 +8,39 @@ struct ClipboardDetailsView: View {
     let currentTime: Date
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 12) {
-                previewSection
-                Divider()
-                infoSection
-                Divider()
-                actionSection
+        ZStack(alignment: .bottom) {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 12) {
+                    previewSection
+                    Divider()
+                    infoSection
+                    Divider()
+                    Spacer(minLength: 60)
+                }
+                .padding(16)
             }
-            .padding(16)
+            HStack {
+                Button(action: {
+                    copyToClipboard(item)
+                }) {
+                    Label("Copy", systemImage: "doc.on.doc")
+                        .foregroundColor(.white)
+                        .font(.system(size: 11, weight: .medium))
+                        .padding(.vertical, 6)
+                        .padding(.horizontal, 12)
+                        .background(Color.accentColor)
+                        .cornerRadius(6)
+                        .shadow(color: Color.black.opacity(0.08), radius: 2, x: 0, y: 1)
+                }
+                .buttonStyle(PlainButtonStyle())
+                .padding(.bottom, 4)
+                .padding(.leading, 24)
+                .padding(.trailing, 24)
+                .padding(.top, 8)
+                Spacer()
+            }
+            .frame(maxWidth: .infinity)
+            .background(VisualEffectView(material: .sidebar, blendingMode: .withinWindow).edgesIgnoringSafeArea(.bottom))
         }
     }
 
@@ -129,4 +153,17 @@ struct SVGView: NSViewRepresentable {
         return hostingView
     }
     func updateNSView(_ nsView: NSView, context: Context) {}
+}
+
+struct VisualEffectView: NSViewRepresentable {
+    var material: NSVisualEffectView.Material
+    var blendingMode: NSVisualEffectView.BlendingMode
+    func makeNSView(context: Context) -> NSVisualEffectView {
+        let view = NSVisualEffectView()
+        view.material = material
+        view.blendingMode = blendingMode
+        view.state = .active
+        return view
+    }
+    func updateNSView(_ nsView: NSVisualEffectView, context: Context) {}
 }

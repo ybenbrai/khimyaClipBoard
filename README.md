@@ -1,25 +1,6 @@
 # Khimya Clipboard
 
-A beautiful and efficient clipboard manager for macOS built with SwiftUI.
-
-![Khimya Clipboard](https://img.shields.io/badge/macOS-13.0+-blue.svg)
-![Swift](https://img.shields.io/badge/Swift-6.1-orange.svg)
-![License](https://img.shields.io/badge/License-MIT-green.svg)
-
-## 🚀 Quick Start
-
-### Download & Install
-
-1. **Download**: Get the latest release from [GitHub Releases](https://github.com/ybenbrai/khimyaClipBoard/releases)
-2. **Extract**: Unzip the `KhimyaClipboard-App.zip` file
-3. **Install**: Drag `KhimyaClipboard.app` to your Applications folder
-4. **Run**: Double-click the app or launch from Applications
-5. **Use**: The app appears in your menu bar - click the clipboard icon to open
-
-### System Requirements
-
-- macOS 13.0 or later
-- No additional installation required
+A beautiful, modern clipboard manager for macOS that keeps track of your clipboard history with a clean, intuitive interface.
 
 ## ✨ Features
 
@@ -27,60 +8,23 @@ A beautiful and efficient clipboard manager for macOS built with SwiftUI.
 - **Smart Deduplication**: Prevents duplicate entries from cluttering your history
 - **File Support**: Handles text, images, and file URLs with appropriate previews
 - **Type Icons**: Visual indicators for different file types with semantic colors (150+ extensions supported)
-- **Copy Sound**: Subtle audio feedback when copying items from the history
 - **Auto-Start**: Option to launch automatically on system startup
 - **Clean UI**: Modern, minimal interface that doesn't interfere with your workflow
 - **Pin Items**: Star important items to keep them at the top
 - **Search**: Quickly find items in your clipboard history
 - **Clear History**: Easy way to clear all clipboard items
-- **🎨 Colored Type Icons**: Visual indicators for different file types (150+ extensions supported)
-- **🖼️ Image & SVG Preview**: Visual preview of images and SVG files
-- **📁 File & Folder Support**: Handle files and directories with smart type detection
-- **⚡ Real-time Monitoring**: Instant clipboard detection
-- **🖱️ One-click Copy**: Quick copy with a single click
-- **🎯 Smart Pinning**: Pin important items to keep them at the top
-- **🎨 Beautiful UI**: Modern, clean interface with hover effects
-- **🔍 Smart Deduplication**: Avoid duplicate entries
-- **💾 Persistent Storage**: Your clipboard history stays safe
-- **📊 Comprehensive File Support**: PDF, Office docs, code files, media, archives, executables, and more
-- **ℹ️ Modern About Page**: Beautiful borderless About panel with seamless navigation
-- **🚀 Auto-Start**: Option to launch automatically at system startup
+- **Sticky Copy Button**: Always-accessible copy button in the details panel
 
-## 🎯 How to Use
+## 🚀 Installation
 
-1. **Launch**: The app runs in the menu bar with a clipboard icon
-2. **Access**: Click the menu bar icon to open the clipboard history
-3. **Copy**: Click any item to copy it back to your clipboard
-4. **Delete**: Hover over items to see delete buttons
-5. **Clear All**: Use the trash button to clear all history
-6. **About**: Click the info button to learn more about the app
-7. **Quit**: Use the power button to exit the application
+### Option 1: Download Pre-built App
 
-## 🔒 Security & Trust
+1. Download the latest release from [Releases](https://github.com/ybenbrai/khimyaClipBoard/releases)
+2. Extract the ZIP file
+3. Drag `KhimyaClipboard.app` to your Applications folder
+4. Launch the app from Applications
 
-✅ **Code Signed**: The app is properly signed and trusted by macOS  
-✅ **No Security Warnings**: Runs without "unidentified developer" alerts  
-✅ **Proper Permissions**: Has necessary entitlements for clipboard access  
-✅ **Native macOS App**: Looks and behaves like any other macOS application
-
-## 🎨 UI/UX Features
-
-- **Responsive Design**: Adapts to different screen sizes
-- **Hover Effects**: Interactive elements with cursor changes
-- **Modern Icons**: SF Symbols for consistent design
-- **Smooth Animations**: Polished user experience
-- **Accessibility**: Built with accessibility in mind
-
-## 🆘 Need Help?
-
-- Right-click the menu bar icon for options
-- Check the About section in the app
-- Visit: https://github.com/ybenbrai/khimyaClipBoard
-- Open an issue on GitHub for bugs or feature requests
-
-## 🔧 For Developers
-
-If you want to build from source or contribute:
+### Option 2: Build from Source
 
 ```bash
 git clone https://github.com/ybenbrai/khimyaClipBoard.git
@@ -88,23 +32,93 @@ cd khimyaClipBoard/ClipMenuBarApp
 swift build -c release
 ```
 
-See [ClipMenuBarApp/README.md](ClipMenuBarApp/README.md) for detailed developer documentation.
+## 🎯 Usage
 
-## 📝 License
+1. **Launch the app** - It will appear as a menu bar icon
+2. **Click the menu bar icon** to open the clipboard history
+3. **Copy items** from any application to add them to your history
+4. **Click on any item** to view details and copy it back to clipboard
+5. **Use the star button** to pin important items
+6. **Use the copy button** in the details panel for quick access
+
+## 🎨 Features in Detail
+
+### Clipboard Monitoring
+
+- Automatically detects new clipboard content
+- Supports text, images, and file URLs
+- Smart deduplication prevents clutter
+- Configurable monitoring on/off
+
+### Visual File Type Support
+
+- 150+ file extensions with semantic colors
+- Icons for different content types (text, image, file, folder)
+- Preview support for images and SVG files
+
+### User Interface
+
+- Clean, modern SwiftUI interface
+- Sidebar layout with details panel
+- Sticky copy button always accessible
+- Hover effects and smooth animations
+- Responsive design that adapts to content
+
+### Auto-Start Integration
+
+- Modern SMAppService API for startup integration
+- User-friendly toggle in the app
+- Proper macOS integration
+
+## 🔧 Technical Details
+
+- **Platform**: macOS 13.0+
+- **Language**: Swift 5.9+
+- **Framework**: SwiftUI + AppKit
+- **Architecture**: MVVM with Combine
+- **Dependencies**: SwiftDraw (for SVG support)
+
+## 📝 Development
+
+### Building
+
+```bash
+cd ClipMenuBarApp
+swift build
+swift run
+```
+
+### Project Structure
+
+```
+ClipMenuBarApp/
+├── Sources/KhimyaClipboard/
+│   ├── Controllers/     # App controllers
+│   ├── Models/          # Data models
+│   ├── Views/           # SwiftUI views
+│   └── Utils/           # Utilities and constants
+├── Package.swift        # Swift Package Manager config
+└── Info.plist          # App configuration
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 👨‍💻 Developer
-
-**Khimya** - [GitHub](https://github.com/ybenbrai)
-
-Developed with ❤️ for the macOS community.
-
 ## 🙏 Acknowledgments
 
-- Apple for SwiftUI and AppKit
-- SwiftDraw for native SVG rendering
+- Built with SwiftUI and modern macOS APIs
+- Icons from SF Symbols
+- SVG support via SwiftDraw
 
 ---
 
-⭐ If you find this project helpful, please give it a star!
+**Made with ❤️ by [Khimya](https://imedia24.de)**
