@@ -137,9 +137,6 @@ class ClipboardManager: ObservableObject {
             lastCopiedFile = url.path
             clipboardIgnoreUntil = Date().addingTimeInterval(1.5)
         }
-        
-        // Play copy sound
-        SoundManager.shared.playCopySound()
     }
 
     func clearHistory() {
