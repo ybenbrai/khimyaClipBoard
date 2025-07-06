@@ -47,6 +47,7 @@
 ### Core Functionality
 
 - **Clipboard History**: Automatic tracking of copied content
+- **Multi-File Grouping**: Copying multiple files/folders creates a single grouped entry with a count and preview, not separate text entries for names
 - **Multi-format Support**: Text, images, files, and URLs
 - **Smart Deduplication**: Prevents duplicate entries
 - **Visual Type Icons**: 150+ file extensions with semantic colors

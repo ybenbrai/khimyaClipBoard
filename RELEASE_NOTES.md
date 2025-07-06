@@ -1,6 +1,28 @@
 # Release Notes
 
-## Version 2.0.0 - Latest Release
+## Version 2.1.0 - Multi-File Grouping & Smarter Clipboard
+
+### ✨ New Features
+
+- **Multi-File Grouping**: When you copy multiple files or folders, they are grouped into a single entry with a count and detailed preview.
+- **No Duplicate Text Entries**: The app now prevents adding a separate text entry for the names of files/folders when copying multiple files/folders.
+
+### 🎨 UI Improvements
+
+- Grouped entries show a purple package icon and a count badge.
+- Details panel lists all files/folders in the group with icons and colors.
+
+### 🛠️ Technical Improvements
+
+- Improved clipboard detection logic for multi-file and single-file scenarios.
+- Smarter deduplication for multi-file entries using exact path comparison.
+- Prevents duplicate entries and infinite loops in clipboard history.
+
+### 🧹 General
+
+- Code cleanup and improved reliability for clipboard monitoring.
+
+## Version 2.0.0 - Sticky Copy Button & UI Polish
 
 ### ✨ New Features
 

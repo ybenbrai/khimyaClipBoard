@@ -47,67 +47,59 @@ class ClipboardManager: ObservableObject {
         timer = nil
     }
 
-    private func checkClipboard() {
-        guard isMonitoring else { return }
-        if let until = clipboardIgnoreUntil, Date() < until {
-            return
-        }
-        if isCopyingFromApp {
-            isCopyingFromApp = false
-            return
-        }
-        let pasteboard = NSPasteboard.general
-        
-        // Check for multiple files first
-        if let files = pasteboard.readObjects(forClasses: [NSURL.self], options: nil) as? [URL], files.count > 1 {
-            // Filter valid files (images, SVGs, or existing files/folders)
-            let validFiles = files.filter { file in
-                let ext = file.pathExtension.lowercased()
-                return ["png", "jpg", "jpeg", "gif", "bmp", "tiff", "heic", "webp"].contains(ext) ||
-                       ext == "svg" ||
-                       FileManager.default.fileExists(atPath: file.path, isDirectory: nil)
-            }
-            
-            if validFiles.count > 1 {
-                // Check if this is a new multi-file selection
-                let filePaths = validFiles.map { $0.path }.sorted()
-                let currentPaths = lastCopiedFile?.components(separatedBy: "|").sorted() ?? []
-                
-                if filePaths != currentPaths {
-                    addItem(content: .multiFile(validFiles))
-                    lastCopiedFile = filePaths.joined(separator: "|")
-                    clipboardIgnoreUntil = Date().addingTimeInterval(1.5)
-                    return
-                }
-            }
-        }
-        
-        // Check for single file (only if no multi-file was detected)
-        if let files = pasteboard.readObjects(forClasses: [NSURL.self], options: nil) as? [URL], files.count == 1, let file = files.first {
+  private func checkClipboard() {
+    guard isMonitoring else { return }
+    if let until = clipboardIgnoreUntil, Date() < until {
+        return
+    }
+    if isCopyingFromApp {
+        isCopyingFromApp = false
+        return
+    }
+
+    let pasteboard = NSPasteboard.general
+
+    // Read file URLs
+    if let files = pasteboard.readObjects(forClasses: [NSURL.self], options: nil) as? [URL], !files.isEmpty {
+        let validFiles = files.filter { file in
             let ext = file.pathExtension.lowercased()
-            if ["png", "jpg", "jpeg", "gif", "bmp", "tiff", "heic", "webp"].contains(ext) ||
-               ext == "svg" ||
-               FileManager.default.fileExists(atPath: file.path, isDirectory: nil) {
-                if file.path == lastCopiedFile { return }
+            return ["png", "jpg", "jpeg", "gif", "bmp", "tiff", "heic", "webp"].contains(ext) ||
+                   ext == "svg" ||
+                   FileManager.default.fileExists(atPath: file.path, isDirectory: nil)
+        }
+
+        if validFiles.count > 1 {
+            let filePaths = validFiles.map { $0.path }.sorted()
+            let currentPaths = lastCopiedFile?.components(separatedBy: "|").sorted() ?? []
+            if filePaths != currentPaths {
+                addItem(content: .multiFile(validFiles))
+            }
+            return // ✅ Skip any text fallback
+        } else if let file = validFiles.first {
+            if file.path != lastCopiedFile {
                 addItem(content: .file(file))
-                return
             }
-        }
-        
-        if let image = pasteboard.readObjects(forClasses: [NSImage.self], options: nil)?.first as? NSImage {
-            let hash = image.tiffRepresentation?.hashValue ?? 0
-            if hash == lastCopiedImageHash { return }
-            addItem(content: .image(image))
-            return
-        }
-        
-        if let text = pasteboard.string(forType: .string), !text.isEmpty {
-            if text == lastCopiedText { return }
-            if !items.contains(where: { if case .text(let t) = $0.content { return t == text } else { return false } }) {
-                addItem(content: .text(text))
-            }
+            return // ✅ Skip any text fallback
         }
     }
+
+    // Read image
+    if let image = pasteboard.readObjects(forClasses: [NSImage.self], options: nil)?.first as? NSImage {
+        let hash = image.tiffRepresentation?.hashValue ?? 0
+        if hash != lastCopiedImageHash {
+            addItem(content: .image(image))
+        }
+        return
+    }
+
+    // Read text
+    if let text = pasteboard.string(forType: .string), !text.isEmpty {
+        if text == lastCopiedText { return }
+        if !items.contains(where: { if case .text(let t) = $0.content { return t == text } else { return false } }) {
+            addItem(content: .text(text))
+        }
+    }
+}
 
     func sortItems() {
         items = items.sorted { (a, b) in

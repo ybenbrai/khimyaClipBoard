@@ -6,6 +6,7 @@ A beautiful, modern clipboard manager for macOS that keeps track of your clipboa
 
 - **Clipboard History**: Automatically saves all copied text, images, and files
 - **Smart Deduplication**: Prevents duplicate entries from cluttering your history
+- **Multi-File Grouping**: When you copy multiple files/folders, they are grouped into a single entry with a count and detailed preview. No duplicate text entries for file/folder names.
 - **File Support**: Handles text, images, and file URLs with appropriate previews
 - **Type Icons**: Visual indicators for different file types with semantic colors (150+ extensions supported)
 - **Auto-Start**: Option to launch automatically on system startup
@@ -37,9 +38,10 @@ swift build -c release
 1. **Launch the app** - It will appear as a menu bar icon
 2. **Click the menu bar icon** to open the clipboard history
 3. **Copy items** from any application to add them to your history
-4. **Click on any item** to view details and copy it back to clipboard
-5. **Use the star button** to pin important items
-6. **Use the copy button** in the details panel for quick access
+4. **Copy multiple files/folders** - They will appear as a single grouped entry with a count and preview, not as separate text entries
+5. **Click on any item** to view details and copy it back to clipboard
+6. **Use the star button** to pin important items
+7. **Use the copy button** in the details panel for quick access
 
 ## 🎨 Features in Detail
 
@@ -49,6 +51,7 @@ swift build -c release
 - Supports text, images, and file URLs
 - Smart deduplication prevents clutter
 - Configurable monitoring on/off
+- **Multi-file grouping**: No duplicate text entries for file/folder names when copying multiple files/folders
 
 ### Visual File Type Support
 
