@@ -1,0 +1,22 @@
+{
+  "configurations": [
+    {
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "${workspaceFolder:clip}/ClipMenuBarApp",
+      "name": "Debug KhimyaClipboard (ClipMenuBarApp)",
+      "program": "${workspaceFolder:clip}/ClipMenuBarApp/.build/debug/KhimyaClipboard",
+      "preLaunchTask": "swift: Build Debug KhimyaClipboard (ClipMenuBarApp)"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "${workspaceFolder:clip}/ClipMenuBarApp",
+      "name": "Release KhimyaClipboard (ClipMenuBarApp)",
+      "program": "${workspaceFolder:clip}/ClipMenuBarApp/.build/release/KhimyaClipboard",
+      "preLaunchTask": "swift: Build Release KhimyaClipboard (ClipMenuBarApp)"
+    }
+  ]
+}
