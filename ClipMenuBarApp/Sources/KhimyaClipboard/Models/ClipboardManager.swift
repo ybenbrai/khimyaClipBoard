@@ -124,6 +124,7 @@ class ClipboardManager: ObservableObject {
         pasteboard.clearContents()
         isCopyingFromApp = true
         clipboardIgnoreUntil = Date().addingTimeInterval(1.0)
+        
         switch item.content {
         case .text(let text):
             pasteboard.setString(text, forType: .string)
@@ -136,6 +137,9 @@ class ClipboardManager: ObservableObject {
             lastCopiedFile = url.path
             clipboardIgnoreUntil = Date().addingTimeInterval(1.5)
         }
+        
+        // Play copy sound
+        SoundManager.shared.playCopySound()
     }
 
     func clearHistory() {

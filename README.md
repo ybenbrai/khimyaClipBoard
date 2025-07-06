@@ -23,7 +23,16 @@ A beautiful and efficient clipboard manager for macOS built with SwiftUI.
 
 ## ✨ Features
 
-- **📋 Clipboard History**: Keep track of your last clipboard items
+- **Clipboard History**: Automatically saves all copied text, images, and files
+- **Smart Deduplication**: Prevents duplicate entries from cluttering your history
+- **File Support**: Handles text, images, and file URLs with appropriate previews
+- **Type Icons**: Visual indicators for different file types with semantic colors (150+ extensions supported)
+- **Copy Sound**: Subtle audio feedback when copying items from the history
+- **Auto-Start**: Option to launch automatically on system startup
+- **Clean UI**: Modern, minimal interface that doesn't interfere with your workflow
+- **Pin Items**: Star important items to keep them at the top
+- **Search**: Quickly find items in your clipboard history
+- **Clear History**: Easy way to clear all clipboard items
 - **🎨 Colored Type Icons**: Visual indicators for different file types (150+ extensions supported)
 - **🖼️ Image & SVG Preview**: Visual preview of images and SVG files
 - **📁 File & Folder Support**: Handle files and directories with smart type detection
