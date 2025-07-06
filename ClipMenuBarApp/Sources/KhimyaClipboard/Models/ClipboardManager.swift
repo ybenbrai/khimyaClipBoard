@@ -57,6 +57,32 @@ class ClipboardManager: ObservableObject {
             return
         }
         let pasteboard = NSPasteboard.general
+        
+        // Check for multiple files first
+        if let files = pasteboard.readObjects(forClasses: [NSURL.self], options: nil) as? [URL], files.count > 1 {
+            // Filter valid files (images, SVGs, or existing files/folders)
+            let validFiles = files.filter { file in
+                let ext = file.pathExtension.lowercased()
+                return ["png", "jpg", "jpeg", "gif", "bmp", "tiff", "heic", "webp"].contains(ext) ||
+                       ext == "svg" ||
+                       FileManager.default.fileExists(atPath: file.path, isDirectory: nil)
+            }
+            
+            if validFiles.count > 1 {
+                // Check if this is a new multi-file selection
+                let filePaths = validFiles.map { $0.path }.sorted()
+                let currentPaths = lastCopiedFile?.components(separatedBy: "|").sorted() ?? []
+                
+                if filePaths != currentPaths {
+                    addItem(content: .multiFile(validFiles))
+                    lastCopiedFile = filePaths.joined(separator: "|")
+                    clipboardIgnoreUntil = Date().addingTimeInterval(1.5)
+                    return
+                }
+            }
+        }
+        
+        // Check for single file
         if let files = pasteboard.readObjects(forClasses: [NSURL.self], options: nil) as? [URL], let file = files.first {
             let ext = file.pathExtension.lowercased()
             if ["png", "jpg", "jpeg", "gif", "bmp", "tiff", "heic", "webp"].contains(ext) ||
@@ -67,12 +93,14 @@ class ClipboardManager: ObservableObject {
                 return
             }
         }
+        
         if let image = pasteboard.readObjects(forClasses: [NSImage.self], options: nil)?.first as? NSImage {
             let hash = image.tiffRepresentation?.hashValue ?? 0
             if hash == lastCopiedImageHash { return }
             addItem(content: .image(image))
             return
         }
+        
         if let text = pasteboard.string(forType: .string), !text.isEmpty {
             if text == lastCopiedText { return }
             if !items.contains(where: { if case .text(let t) = $0.content { return t == text } else { return false } }) {
@@ -114,6 +142,9 @@ class ClipboardManager: ObservableObject {
         case .file(let url):
             lastCopiedFile = url.path
             clipboardIgnoreUntil = Date().addingTimeInterval(1.5) // cooldown for files
+        case .multiFile(let files):
+            lastCopiedFile = files.map { $0.path }.joined(separator: "|")
+            clipboardIgnoreUntil = Date().addingTimeInterval(1.5)
         }
 
         print("Added clipboard item: \(content.preview)")
@@ -135,6 +166,10 @@ class ClipboardManager: ObservableObject {
         case .file(let url):
             pasteboard.writeObjects([url as NSURL])
             lastCopiedFile = url.path
+            clipboardIgnoreUntil = Date().addingTimeInterval(1.5)
+        case .multiFile(let files):
+            pasteboard.writeObjects(files.map { $0 as NSURL })
+            lastCopiedFile = files.map { $0.path }.joined(separator: "|")
             clipboardIgnoreUntil = Date().addingTimeInterval(1.5)
         }
     }

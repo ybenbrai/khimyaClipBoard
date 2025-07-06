@@ -33,6 +33,7 @@ enum ClipboardContent {
     case text(String)
     case image(NSImage)
     case file(URL)
+    case multiFile([URL])
     
     var isDirectory: Bool {
         switch self {
@@ -40,6 +41,12 @@ enum ClipboardContent {
             var isDir: ObjCBool = false
             FileManager.default.fileExists(atPath: url.path, isDirectory: &isDir)
             return isDir.boolValue
+        case .multiFile(let urls):
+            return urls.contains { url in
+                var isDir: ObjCBool = false
+                FileManager.default.fileExists(atPath: url.path, isDirectory: &isDir)
+                return isDir.boolValue
+            }
         default:
             return false
         }
@@ -57,6 +64,11 @@ enum ClipboardContent {
             } else {
                 return url.lastPathComponent
             }
+        case .multiFile(let urls):
+            let count = urls.count
+            let firstFew = urls.prefix(3).map { $0.lastPathComponent }
+            let preview = firstFew.joined(separator: ", ")
+            return count > 3 ? "\(preview)..." : preview
         }
     }
     
@@ -68,6 +80,21 @@ enum ClipboardContent {
             return "Image"
         case .file(_):
             return isDirectory ? "Folder" : "File"
+        case .multiFile(let urls):
+            let fileCount = urls.filter { url in
+                var isDir: ObjCBool = false
+                FileManager.default.fileExists(atPath: url.path, isDirectory: &isDir)
+                return !isDir.boolValue
+            }.count
+            let folderCount = urls.count - fileCount
+            
+            if folderCount == 0 {
+                return "\(urls.count) Files"
+            } else if fileCount == 0 {
+                return "\(urls.count) Folders"
+            } else {
+                return "\(fileCount) Files, \(folderCount) Folders"
+            }
         }
     }
     
@@ -122,6 +149,8 @@ enum ClipboardContent {
                     return ("music.note", .pink)
                 case "mp4", "avi", "mov", "mkv", "wmv", "flv", "webm":
                     return ("video", .red)
+                
+                // Images
                 case "png", "jpg", "jpeg", "gif", "bmp", "tiff", "heic", "webp":
                     return ("photo", .green)
                 case "svg":
@@ -168,6 +197,8 @@ enum ClipboardContent {
                     return ("app.badge", .green)
                 case "dll", "so", "dylib":
                     return ("gear", .blue)
+                
+                // Disk images
                 case "iso", "img":
                     return ("opticaldisc", .purple)
                 
@@ -216,6 +247,8 @@ enum ClipboardContent {
                     return ("doc.ruby", .red)
                 case "cargo.toml", "cargo.lock":
                     return ("doc.rust", .orange)
+                
+                // Go modules
                 case "go.mod", "go.sum":
                     return ("doc.go", .blue)
                 case "pom.xml":
@@ -262,7 +295,9 @@ enum ClipboardContent {
                     return ("flowchart", .blue)
                 case "automator":
                     return ("gearshape.2", .orange)
-                case "scpt", "applescript":
+                
+                // Scripts
+                case "applescript", "scpt":
                     return ("doc.applescript", .orange)
                 case "command":
                     return ("terminal", .green)
@@ -315,6 +350,8 @@ enum ClipboardContent {
                     return ("doc", .gray)
                 }
             }
+        case .multiFile(_):
+            return ("shippingbox.fill", .purple)
         }
     }
 } 

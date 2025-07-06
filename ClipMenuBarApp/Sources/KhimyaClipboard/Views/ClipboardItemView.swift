@@ -26,9 +26,21 @@ struct ClipboardItemView: View {
                 .frame(width: 20, height: 20)
 
             VStack(alignment: .leading, spacing: 4) {
-                Text(item.preview.trimmingCharacters(in: .whitespacesAndNewlines))
-                    .font(.system(size: 12, weight: .regular))
-                    .lineLimit(1)
+                HStack {
+                    Text(item.preview.trimmingCharacters(in: .whitespacesAndNewlines))
+                        .font(.system(size: 12, weight: .regular))
+                        .lineLimit(1)
+                    
+                    if case .multiFile(let urls) = item.content {
+                        Text("(\(urls.count))")
+                            .font(.system(size: 10, weight: .medium))
+                            .foregroundColor(.purple)
+                            .padding(.horizontal, 4)
+                            .padding(.vertical, 1)
+                            .background(Color.purple.opacity(0.1))
+                            .cornerRadius(4)
+                    }
+                }
                 Spacer(minLength: 2)
                 Text(timeAgoString(from: item.lastCopied))
                     .font(.system(size: 10))
