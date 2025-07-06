@@ -82,8 +82,8 @@ class ClipboardManager: ObservableObject {
             }
         }
         
-        // Check for single file
-        if let files = pasteboard.readObjects(forClasses: [NSURL.self], options: nil) as? [URL], let file = files.first {
+        // Check for single file (only if no multi-file was detected)
+        if let files = pasteboard.readObjects(forClasses: [NSURL.self], options: nil) as? [URL], files.count == 1, let file = files.first {
             let ext = file.pathExtension.lowercased()
             if ["png", "jpg", "jpeg", "gif", "bmp", "tiff", "heic", "webp"].contains(ext) ||
                ext == "svg" ||
@@ -120,18 +120,46 @@ class ClipboardManager: ObservableObject {
 
     private func addItem(content: ClipboardContent) {
         let now = Date()
-        if let existingIndex = items.firstIndex(where: { $0.content.preview == content.preview }) {
-            items[existingIndex].lastCopied = now
-            items[existingIndex].copyCount += 1
-            let updated = items.remove(at: existingIndex)
-            items.insert(updated, at: 0)
+        
+        // Special handling for multi-file deduplication
+        if case .multiFile(let newFiles) = content {
+            let newPaths = newFiles.map { $0.path }.sorted()
+            
+            // Check if we already have this exact multi-file selection
+            if let existingIndex = items.firstIndex(where: { item in
+                if case .multiFile(let existingFiles) = item.content {
+                    let existingPaths = existingFiles.map { $0.path }.sorted()
+                    return existingPaths == newPaths
+                }
+                return false
+            }) {
+                items[existingIndex].lastCopied = now
+                items[existingIndex].copyCount += 1
+                let updated = items.remove(at: existingIndex)
+                items.insert(updated, at: 0)
+            } else {
+                let newItem = ClipboardItem(content: content, date: now)
+                items.insert(newItem, at: 0)
+                if items.count > maxItems {
+                    items = Array(items.prefix(maxItems))
+                }
+            }
         } else {
-            let newItem = ClipboardItem(content: content, date: now)
-            items.insert(newItem, at: 0)
-            if items.count > maxItems {
-                items = Array(items.prefix(maxItems))
+            // Original logic for other content types
+            if let existingIndex = items.firstIndex(where: { $0.content.preview == content.preview }) {
+                items[existingIndex].lastCopied = now
+                items[existingIndex].copyCount += 1
+                let updated = items.remove(at: existingIndex)
+                items.insert(updated, at: 0)
+            } else {
+                let newItem = ClipboardItem(content: content, date: now)
+                items.insert(newItem, at: 0)
+                if items.count > maxItems {
+                    items = Array(items.prefix(maxItems))
+                }
             }
         }
+        
         sortItems()
 
         switch content {
