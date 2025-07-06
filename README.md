@@ -35,6 +35,7 @@ A beautiful and efficient clipboard manager for macOS built with SwiftUI.
 - **💾 Persistent Storage**: Your clipboard history stays safe
 - **📊 Comprehensive File Support**: PDF, Office docs, code files, media, archives, executables, and more
 - **ℹ️ Modern About Page**: Beautiful borderless About panel with seamless navigation
+- **🚀 Auto-Start**: Option to launch automatically at system startup
 
 ## 🎯 How to Use
 

@@ -1,5 +1,6 @@
 import SwiftUI
 import AppKit
+import ServiceManagement
 
 @MainActor
 class MenuBarController: NSObject, NSApplicationDelegate, NSTextViewDelegate {
@@ -140,10 +141,53 @@ class MenuBarController: NSObject, NSApplicationDelegate, NSTextViewDelegate {
         let menu = NSMenu()
         menu.addItem(NSMenuItem(title: "About Khimya Clipboard", action: #selector(showAbout(_:)), keyEquivalent: ""))
         menu.addItem(NSMenuItem.separator())
+        
+        // Startup options
+        let startupItem = NSMenuItem(title: isLaunchAtStartupEnabled() ? "Disable Launch at Startup" : "Enable Launch at Startup", 
+                                   action: #selector(toggleLaunchAtStartup(_:)), 
+                                   keyEquivalent: "")
+        menu.addItem(startupItem)
+        
+        menu.addItem(NSMenuItem.separator())
         menu.addItem(NSMenuItem(title: "Quit", action: #selector(quitApp(_:)), keyEquivalent: "q"))
 
         if let button = statusItem.button {
             menu.popUp(positioning: nil, at: NSPoint(x: 0, y: button.bounds.height), in: button)
+        }
+    }
+    
+    @objc private func toggleLaunchAtStartup(_ sender: AnyObject?) {
+        if isLaunchAtStartupEnabled() {
+            disableLaunchAtStartup()
+        } else {
+            enableLaunchAtStartup()
+        }
+    }
+    
+    private func isLaunchAtStartupEnabled() -> Bool {
+        let appService = SMAppService.mainApp
+        return appService.status == .enabled
+    }
+    
+    private func enableLaunchAtStartup() {
+        let appService = SMAppService.mainApp
+        
+        do {
+            try appService.register()
+            print("Launch at startup enabled")
+        } catch {
+            print("Failed to enable launch at startup: \(error)")
+        }
+    }
+    
+    private func disableLaunchAtStartup() {
+        let appService = SMAppService.mainApp
+        
+        do {
+            try appService.unregister()
+            print("Launch at startup disabled")
+        } catch {
+            print("Failed to disable launch at startup: \(error)")
         }
     }
 

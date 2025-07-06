@@ -42,6 +42,7 @@
 - 🎨 Beautiful, modern interface
 - 📊 Support for PDF, Office docs, code files, media, archives, and executables
 - ℹ️ Modern About page with borderless design
+- 🚀 Auto-start at system startup
 
 ## 🆘 Need Help?
 
