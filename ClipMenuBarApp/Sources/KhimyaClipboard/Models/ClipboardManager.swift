@@ -132,8 +132,6 @@ class ClipboardManager: ObservableObject {
             pasteboard.writeObjects([image])
             lastCopiedImageHash = image.tiffRepresentation?.hashValue ?? 0
         case .file(let url):
-            pasteboard.setString(url.absoluteString, forType: .fileURL)
-            pasteboard.setPropertyList([url.path], forType: NSPasteboard.PasteboardType("NSFilenamesPboardType"))
             pasteboard.writeObjects([url as NSURL])
             lastCopiedFile = url.path
             clipboardIgnoreUntil = Date().addingTimeInterval(1.5)

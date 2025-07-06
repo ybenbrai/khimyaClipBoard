@@ -89,8 +89,9 @@ struct ClipboardDetailsView: View {
             copyToClipboard(item)
         }) {
             Label("Copy to Clipboard", systemImage: "doc.on.doc")
+                .foregroundColor(.blue)
         }
-        .buttonStyle(LinkButtonStyle())
+        .buttonStyle(PlainButtonStyle())
     }
 
     private func dateString(_ date: Date) -> String {
@@ -109,8 +110,6 @@ struct ClipboardDetailsView: View {
         case .image(let image):
             pasteboard.writeObjects([image])
         case .file(let url):
-            pasteboard.setString(url.absoluteString, forType: .fileURL)
-            pasteboard.setPropertyList([url.path], forType: NSPasteboard.PasteboardType("NSFilenamesPboardType"))
             pasteboard.writeObjects([url as NSURL])
         }
     }

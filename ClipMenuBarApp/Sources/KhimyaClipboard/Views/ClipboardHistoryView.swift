@@ -5,64 +5,85 @@ struct ClipboardHistoryView: View {
     @State private var currentTime = Date()
     @State private var selectedItem: ClipboardItem? = nil
     @State private var showClearConfirmation = false
-    @State private var showAboutModal = false
     @State private var sortDescending = true
     @State private var showDeleteConfirmation = false
     @State private var itemToDelete: ClipboardItem? = nil
-    var isModalPresented: Binding<Bool>?
+    @State private var timeUpdateTimer: Timer?
 
     var body: some View {
-        HStack(spacing: 0) {
-            // Sidebar
-            VStack(spacing: 0) {
-                header
-                Divider()
-                ScrollViewReader { proxy in
-                    List(selection: $selectedItem) {
-                        ForEach(clipboardManager.items) { item in
-                            ClipboardItemView(
-                                item: item,
-                                currentTime: currentTime,
-                                isSelected: selectedItem?.id == item.id,
-                                onSelect: { selectedItem = item },
-                                onPin: { togglePin(item) },
-                                onDelete: { itemToDelete = item; showDeleteConfirmation = true }
-                            )
-                            .tag(item as ClipboardItem?)
-                            .id(item.id)
-                        }
-                    }
-                    .listStyle(SidebarListStyle())
-                    .onChange(of: clipboardManager.items.first?.id) { firstId in
-                        if let firstId = firstId {
-                            withAnimation { proxy.scrollTo(firstId, anchor: .top) }
-                        }
-                    }
-                    .onAppear {
-                        if let firstId = clipboardManager.items.first?.id {
-                            proxy.scrollTo(firstId, anchor: .top)
-                        }
-                    }
+        Group {
+            if clipboardManager.items.isEmpty {
+                VStack(spacing: 16) {
+                    Image(systemName: "doc.on.clipboard")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 72, height: 72)
+                        .foregroundColor(Color.secondary.opacity(0.5))
+                    Text("Your clipboard is empty")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(.primary)
+                    Text("Start copying text or links to build your history.")
+                        .font(.body)
+                        .foregroundColor(.secondary)
                 }
-            }
-            .frame(minWidth: 300, idealWidth: 320, maxWidth: 340)
-            .background(Color(NSColor.windowBackgroundColor))
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color(NSColor.windowBackgroundColor))
+            } else {
+                HStack(spacing: 0) {
+                    // Sidebar
+                    VStack(spacing: 0) {
+                        header
+                        Divider()
+                        ScrollViewReader { proxy in
+                            List(selection: $selectedItem) {
+                                ForEach(clipboardManager.items) { item in
+                                    ClipboardItemView(
+                                        item: item,
+                                        currentTime: currentTime,
+                                        isSelected: selectedItem?.id == item.id,
+                                        onSelect: { selectedItem = item },
+                                        onPin: { togglePin(item) },
+                                        onCopy: { clipboardManager.copyToClipboard(item) },
+                                        onDelete: { itemToDelete = item; showDeleteConfirmation = true }
+                                    )
+                                    .tag(item as ClipboardItem?)
+                                    .id(item.id)
+                                }
+                            }
+                            .listStyle(SidebarListStyle())
+                            .onChange(of: clipboardManager.items.first?.id) { firstId in
+                                if let firstId = firstId {
+                                    withAnimation { proxy.scrollTo(firstId, anchor: .top) }
+                                }
+                            }
+                            .onAppear {
+                                if let firstId = clipboardManager.items.first?.id {
+                                    proxy.scrollTo(firstId, anchor: .top)
+                                }
+                            }
+                        }
+                    }
+                    .frame(minWidth: 300, idealWidth: 320, maxWidth: 340)
+                    .background(Color(NSColor.windowBackgroundColor))
 
-            Divider()
+                    Divider()
 
-            // Details
-            VStack(spacing: 0) {
-                if let selected = selectedItem ?? clipboardManager.items.first {
-                    ClipboardDetailsView(item: selected, currentTime: currentTime)
-                        .background(Color(NSColor.textBackgroundColor))
-                } else {
-                    Spacer()
+                    // Details
+                    VStack(spacing: 0) {
+                        if let selected = selectedItem ?? clipboardManager.items.first {
+                            ClipboardDetailsView(item: selected, currentTime: currentTime)
+                                .background(Color(NSColor.textBackgroundColor))
+                        } else {
+                            Spacer()
+                        }
+                    }
+                    .frame(minWidth: 380, maxWidth: .infinity)
                 }
+                .frame(minWidth: 700, minHeight: 400)
+                .background(Color(NSColor.windowBackgroundColor))
             }
-            .frame(minWidth: 380, maxWidth: .infinity)
         }
-        .frame(minWidth: 700, minHeight: 400)
-        .background(Color(NSColor.windowBackgroundColor))
         .onAppear { startTimeUpdate() }
         .onDisappear { stopTimeUpdate() }
         .sheet(isPresented: $showDeleteConfirmation) {
@@ -113,17 +134,6 @@ struct ClipboardHistoryView: View {
             .help("Sort Order")
 
             Button(action: {
-                if let selected = selectedItem ?? clipboardManager.items.first {
-                    togglePin(selected)
-                }
-            }) {
-                Image(systemName: (selectedItem?.pinned ?? false) ? "star.fill" : "star")
-                    .foregroundColor((selectedItem?.pinned ?? false) ? .yellow : .gray)
-            }
-            .buttonStyle(PlainButtonStyle())
-            .help("Pin/Unpin")
-
-            Button(action: {
                 showClearConfirmation = true
             }) {
                 Image(systemName: "trash.slash")
@@ -137,7 +147,7 @@ struct ClipboardHistoryView: View {
     }
 
     private func startTimeUpdate() {
-        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+        timeUpdateTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
             Task { @MainActor in
                 currentTime = Date()
             }
@@ -145,7 +155,7 @@ struct ClipboardHistoryView: View {
     }
 
     private func stopTimeUpdate() {
-        // Do nothing (timer invalidated automatically)
+        timeUpdateTimer?.invalidate()
     }
 
     private func togglePin(_ item: ClipboardItem) {

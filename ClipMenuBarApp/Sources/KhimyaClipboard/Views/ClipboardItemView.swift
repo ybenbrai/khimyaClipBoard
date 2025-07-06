@@ -7,6 +7,7 @@ struct ClipboardItemView: View {
     let isSelected: Bool
     let onSelect: () -> Void
     let onPin: () -> Void
+    let onCopy: () -> Void
     let onDelete: () -> Void
 
     @State private var isHovered = false
@@ -20,7 +21,8 @@ struct ClipboardItemView: View {
             .buttonStyle(PlainButtonStyle())
             .frame(width: 20, height: 20)
 
-            contentIcon
+            Image(systemName: item.content.typeIcon.name)
+                .foregroundColor(item.content.typeIcon.color)
                 .frame(width: 20, height: 20)
 
             VStack(alignment: .leading, spacing: 4) {
@@ -35,6 +37,13 @@ struct ClipboardItemView: View {
             .padding(.vertical, 2)
 
             Spacer(minLength: 8)
+
+            Button(action: onCopy) {
+                Image(systemName: "doc.on.doc")
+                    .foregroundColor(.blue)
+            }
+            .buttonStyle(PlainButtonStyle())
+            .help("Copy")
 
             Button(action: onDelete) {
                 Image(systemName: "trash")
@@ -59,26 +68,6 @@ struct ClipboardItemView: View {
         .contentShape(Rectangle())
         .onTapGesture {
             onSelect()
-        }
-    }
-
-    @ViewBuilder
-    private var contentIcon: some View {
-        switch item.content {
-        case .text:
-            Image(systemName: "doc.text")
-                .foregroundColor(.blue)
-        case .image:
-            Image(systemName: "photo")
-                .foregroundColor(.green)
-        case .file:
-            if item.content.isDirectory {
-                Image(systemName: "folder")
-                    .foregroundColor(.yellow)
-            } else {
-                Image(systemName: "doc")
-                    .foregroundColor(.orange)
-            }
         }
     }
 

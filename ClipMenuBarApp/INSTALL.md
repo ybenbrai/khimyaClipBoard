@@ -34,10 +34,13 @@
 ## 🎯 Features
 
 - 📋 Clipboard history with real-time monitoring
+- 🎨 Colored type icons for 150+ file types
 - 🖼️ Image and SVG preview support
-- 📁 File and folder support
+- 📁 File and folder support with smart detection
 - ⚡ One-click copy from history
+- 🎯 Smart pinning for important items
 - 🎨 Beautiful, modern interface
+- 📊 Support for PDF, Office docs, code files, media, archives, and executables
 
 ## 🆘 Need Help?
 
