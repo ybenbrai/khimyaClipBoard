@@ -47,13 +47,14 @@ git clone https://github.com/ybenbrai/khimyaClipBoard.git
 cd khimyaClipBoard/ClipMenuBarApp
 ```
 
-2. Build the project:
+2. Build and package the app and DMG:
 
 ```bash
-swift build -c release
+./build.sh
 ```
 
-3. The executable will be in `.build/release/KhimyaClipboard`
+- This will build the latest version, update the .app bundle, and create a DMG in the `dist/` folder.
+- The app version is now **1.0.1**.
 
 ### Project Structure
 

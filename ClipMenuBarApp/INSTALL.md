@@ -29,11 +29,12 @@
    cd khimyaClipBoard/ClipMenuBarApp
    ```
 
-2. **Build and Run**
+2. **Build and Package**
    ```bash
-   swift build
-   swift run
+   ./build.sh
    ```
+   - This will build the latest version, update the .app bundle, and create a DMG in the `dist/` folder.
+   - The app version is now **1.0.1**.
 
 ## 🔧 System Requirements
 
@@ -120,8 +121,8 @@ ClipMenuBarApp/
 ### Building for Distribution
 
 ```bash
-swift build -c release
-# The built app will be in .build/release/
+./build.sh
+# The built app will be in dist/KhimyaClipboard.app and DMG in dist/KhimyaClipboard.dmg
 ```
 
 ## 🤝 Support
